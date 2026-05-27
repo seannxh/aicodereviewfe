@@ -5,9 +5,9 @@ export type Severity = 'error' | 'warning' | 'suggestion'
 export interface User {
   id: number
   githubId: string
-  githubUsername: string   // backend sends "githubUsername", not "login"
-  email: string            // empty string if GitHub account has no public email
-  avatarUrl: string        // empty string if not set
+  githubUsername: string   
+  email: string            
+  avatarUrl: string       
   createdAt: string
 }
 
