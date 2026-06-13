@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import { BoltIcon, PlusCircleIcon } from './icons'
+import { config } from '../config/env'
 import type { User } from '../types'
 
 interface Props {
@@ -6,8 +8,10 @@ interface Props {
 }
 
 export default function Navbar({ user }: Props) {
+  // Logout is a full-page navigation (not an XHR) so the browser follows the
+  // backend's redirect and the session cookie is cleared server-side.
   const handleLogout = () => {
-    window.location.href = 'http://localhost:8080/logout'
+    window.location.href = config.logoutUrl
   }
 
   return (
@@ -17,9 +21,7 @@ export default function Navbar({ user }: Props) {
           {/* Logo */}
           <Link to="/dashboard" className="flex items-center gap-2.5 group">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-cyan-500 shadow-lg shadow-purple-500/20 transition-shadow group-hover:shadow-purple-500/40">
-              <svg className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-              </svg>
+              <BoltIcon className="h-4 w-4 text-white" />
             </div>
             <span className="text-sm font-semibold text-white">ReviewAI</span>
           </Link>
@@ -40,9 +42,7 @@ export default function Navbar({ user }: Props) {
               to="/install"
               className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-gray-300 hover:bg-white/10 hover:text-white transition-all"
             >
-              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+              <PlusCircleIcon className="h-3.5 w-3.5" />
               Add Repos
             </Link>
             <div className="flex items-center gap-2.5 pl-3 border-l border-white/10">
