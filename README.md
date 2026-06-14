@@ -62,3 +62,4 @@ src/
   they never talk to Axios directly. Failures are normalized to `ApiError`.
 - **Icons are shared.** Reused SVGs live in
   [`src/components/icons.tsx`](src/components/icons.tsx) rather than being inlined.
+// ai review test Sat Jun 13 21:39:54 CDT 2026
