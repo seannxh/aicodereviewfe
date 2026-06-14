@@ -4,9 +4,16 @@ import Landing from './pages/Landing'
 import Dashboard from './pages/Dashboard'
 import ReviewDetail from './pages/ReviewDetail'
 import Install from './pages/Install'
-import { getMe } from './api/client'
+import { getMe } from './api/auth'
+import { BoltIcon } from './components/icons'
 import type { User } from './types'
 
+/**
+ * Tri-state authentication status:
+ * - `loading`         — the initial `getMe()` call is still in flight
+ * - `unauthenticated` — no valid session; visitor sees the public landing page
+ * - `authenticated`   — session valid; `user` is populated and routes unlock
+ */
 type AuthState = 'loading' | 'unauthenticated' | 'authenticated'
 
 function LoadingScreen() {
@@ -14,9 +21,7 @@ function LoadingScreen() {
     <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a]">
       <div className="flex flex-col items-center gap-4">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-cyan-500 shadow-lg shadow-purple-500/30 animate-pulse">
-          <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-          </svg>
+          <BoltIcon className="h-6 w-6 text-white" />
         </div>
         <p className="text-xs text-gray-600 font-medium tracking-wide">Loading ReviewAI…</p>
       </div>
@@ -28,6 +33,8 @@ export default function App() {
   const [authState, setAuthState] = useState<AuthState>('loading')
   const [user, setUser] = useState<User | null>(null)
 
+  // On mount, ask the backend who we are. A successful response means a valid
+  // session cookie exists; any rejection (typically 401) is treated as logged-out.
   useEffect(() => {
     getMe()
       .then((u) => {
